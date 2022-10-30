@@ -14,6 +14,8 @@ RUN chmod +x /build/factorio/bin/x64/factorio
 
 FROM ubuntu:22.04 AS runtime
 
+WORKDIR /app
+
 COPY --from=builder /build/factorio/ /app/
 
 ENV PATH $PATH:/app/bin/x64
@@ -22,6 +24,6 @@ RUN factorio --create my-server
 
 FROM runtime
 
-EXPOSE 34197
+EXPOSE 34197/udp
 
 ENTRYPOINT ["factorio", "--start-server", "my-server"]
