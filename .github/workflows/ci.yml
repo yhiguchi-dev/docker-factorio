@@ -8,10 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        build-context:
-          - factorio
     steps:
       - uses: actions/checkout@v3
       - name: Set up Docker Buildx
@@ -24,28 +20,28 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build ${{ matrix.build-context }}
+      - name: Build Docker Image
         uses: docker/build-push-action@v3
         with:
-          context: ./${{ matrix.build-context }}
+          context: ./
           load: true
-          tags: ghcr.io/${{ github.repository_owner }}/${{ matrix.build-context }}:latest
+          tags: ghcr.io/${{ github.repository_owner }}/factorio:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ghcr.io/${{ github.repository_owner }}/sampleapp:latest
+          image-ref: ghcr.io/${{ github.repository_owner }}/factorio:latest
           format: table
           exit-code: 1
           ignore-unfixed: true
           vuln-type: os,library
           severity: CRITICAL,HIGH
-      - name: Push ${{ matrix.build-context }}
+      - name: Push Docker Image
         uses: docker/build-push-action@v3
         with:
-          context: ./${{ matrix.build-context }}
+          context: ./
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/${{ matrix.build-context }}:latest
+          tags: ghcr.io/${{ github.repository_owner }}/factorio:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
