@@ -12,7 +12,7 @@ RUN curl -L -o factorio-headless.tar.xz "https://factorio.com/get-download/stabl
 RUN tar Jxvf ./factorio-headless.tar.xz
 RUN chmod +x /build/factorio/bin/x64/factorio
 
-FROM setup-factorio AS builder
+FROM setup-builder AS builder
 
 WORKDIR /mods
 
