@@ -9,6 +9,9 @@ RUN \
     xz-utils=5.2.5-2ubuntu1 \
   && rm -rf /var/lib/apt/lists/*
 RUN curl -L -o factorio-headless.tar.xz "https://factorio.com/get-download/stable/headless/linux64"
+RUN curl -L -o Krastorio2.zip "https://factorio-launcher-mods.storage.googleapis.com/Krastorio2/1.3.6.zip"
+RUN curl -L -o flib.zip "https://factorio-launcher-mods.storage.googleapis.com/flib/0.11.2.zip"
+RUN curl -L -o Krastorio2Assets.zip "https://factorio-launcher-mods.storage.googleapis.com/Krastorio2Assets/1.2.0.zip"
 RUN tar Jxvf ./factorio-headless.tar.xz
 RUN chmod +x /build/factorio/bin/x64/factorio
 
@@ -17,6 +20,9 @@ FROM ubuntu:22.04 AS runtime
 WORKDIR /app
 
 COPY --from=builder /build/factorio/ /app/
+COPY --from=builder /build/Krastorio2.zip /app/mods/
+COPY --from=builder /build/flib.zip /app/mods/
+COPY --from=builder /build/Krastorio2Assets.zip /app/mods/
 
 ENV PATH $PATH:/app/bin/x64
 
