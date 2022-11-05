@@ -25,7 +25,7 @@ FROM ubuntu:22.04 AS runtime
 WORKDIR /app
 
 COPY --from=builder /build/factorio/ /app/
-COPY --from=builder /mods/ /app/mods/
+COPY --from=builder /build/mods/ /app/mods/
 
 ENV PATH $PATH:/app/bin/x64
 
