@@ -33,8 +33,10 @@ ENV PATH $PATH:/app/bin/x64
 
 RUN factorio --create my-server
 
+COPY my-server.zip /app/
+
 FROM runtime
 
 EXPOSE 34197/udp
 
-ENTRYPOINT ["factorio", "--start-server", "my-server"]
+ENTRYPOINT ["factorio", "--start-server", "my-server.zip"]
